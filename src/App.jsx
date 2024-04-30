@@ -4,7 +4,12 @@ import MyNav from "./MyNav";
 import Welcome from "./Welcome";
 import MyFooter from "./MyFooter";
 import MyBookList from "./MyBookList";
-import { Col, Container, Row } from "react-bootstrap";
+import {
+  Alert,
+  Col,
+  Container,
+  Row,
+} from "react-bootstrap";
 import CommentArea from "./CommentArea";
 import { useState } from "react";
 // import Home from "./Home";
@@ -27,7 +32,11 @@ const App = (props) => {
               />
             </Col>
             <Col>
-              <CommentArea elementId={elementId} />
+              {elementId ? (
+                <CommentArea elementId={elementId} />
+              ) : (
+                <Alert>Seleziona un libro</Alert>
+              )}
             </Col>
           </Row>
         </Container>

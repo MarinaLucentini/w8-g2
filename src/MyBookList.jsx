@@ -91,6 +91,7 @@ const MyBookList = (props) => {
                   price={book.price}
                   asin={book.asin}
                   elementId={props.elementId}
+                  elementIdNew={props.elementIdNew}
                 />
               </Col>
             );
