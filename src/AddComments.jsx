@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 const AddComments = (props) => {
@@ -7,10 +7,45 @@ const AddComments = (props) => {
     rate: "",
     elementId: props.elementId,
   });
+  const fetchComment = () => {
+    fetch(
+      "https://striveschool-api.herokuapp.com/api/comments/",
+      {
+        method: "POST",
+        body: JSON.stringify(commenti),
+        headers: {
+          "Content-Type": "application/json",
+
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE4ZjYwYTdmMzA0NjAwMWFlNTlmYTEiLCJpYXQiOjE3MTQ0MDAxMTIsImV4cCI6MTcxNTYwOTcxMn0.R1bNr5Db_DgmIlOFTMUMkxtY2H6Nt-0wEcEDw9S58-8",
+        },
+      }
+    )
+      .then((rep) => {
+        if (rep.ok) {
+          setCommenti({
+            comment: "",
+            rate: "",
+            elementId: props.elementId,
+          });
+        } else {
+          throw new Error("si è verificato un errore");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handlesubmit = (e) => {
     e.preventDefault();
-    this.fetchComment();
+    fetchComment();
   };
+  const handleChanged = (propertyName, propertyValue) => {
+    setCommenti(...commenti, {
+      [propertyName]: propertyValue,
+    });
+  };
+
   return (
     <>
       <Form onSubmit={handlesubmit}>
@@ -23,14 +58,14 @@ const AddComments = (props) => {
             as="textarea"
             rows={3}
             onChange={(e) =>
-              this.handleChanged("comment", e.target.value)
+              handleChanged("comment", e.target.value)
             }
           />
         </Form.Group>
         <Form.Select
           aria-label="Default select example"
           onChange={(e) =>
-            this.handleChanged("rate", e.target.value)
+            handleChanged("rate", e.target.value)
           }
         >
           <option>
@@ -55,63 +90,4 @@ const AddComments = (props) => {
   );
 };
 
-// class AddComments extends Component {
-//   state = {
-//     commenti: ,
-//   };
-
-//   fetchComment = () => {
-//     fetch(
-//       "https://striveschool-api.herokuapp.com/api/comments/",
-//       {
-//         method: "POST",
-//         body: JSON.stringify(this.state.commenti),
-//         headers: {
-//           "Content-Type": "application/json",
-
-//           Authorization:
-//             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjE4ZjYwYTdmMzA0NjAwMWFlNTlmYTEiLCJpYXQiOjE3MTQ0MDAxMTIsImV4cCI6MTcxNTYwOTcxMn0.R1bNr5Db_DgmIlOFTMUMkxtY2H6Nt-0wEcEDw9S58-8",
-//         },
-//       }
-//     )
-//       .then((rep) => {
-//         if (rep.ok) {
-//           this.setState({
-//             commenti: {
-//               comment: "",
-//               rate: "",
-//               elementId: "",
-//             },
-//           });
-//         } else {
-//           throw new Error("si è verificato un errore");
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//       });
-//   };
-
-//   handlesubmit = (e) => {
-//     e.preventDefault();
-//     this.fetchComment();
-//   };
-//   handleChanged = (propertyName, propertyValue) => {
-//     this.setState(
-//       (prevState) => ({
-//         commenti: {
-//           ...prevState.commenti,
-//           [propertyName]: propertyValue,
-//         },
-//       }),
-//       () => {
-//         console.log(this.state.commenti);
-//       }
-//     );
-//   };
-
-//   render() {
-
-//   }
-// }
 export default AddComments;
